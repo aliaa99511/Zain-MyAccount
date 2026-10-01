@@ -1,5 +1,5 @@
 import { createTheme } from "@mui/material/styles";
-import { commonTheme } from "./commonTheme";
+import { commonComponents, commonTheme } from "./commonTheme";
 
 export const staffLightTheme = createTheme({
   ...commonTheme,
@@ -9,6 +9,9 @@ export const staffLightTheme = createTheme({
       main: "#00897b",
     },
   },
+  components: {
+    ...commonComponents,
+  }
 });
 
 export const staffDarkTheme = createTheme({
@@ -19,4 +22,7 @@ export const staffDarkTheme = createTheme({
       main: "#80cbc4",
     },
   },
+  components: {
+    ...commonComponents,
+  }
 });

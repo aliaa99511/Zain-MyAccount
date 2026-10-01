@@ -26,13 +26,13 @@ export const ConfirmDialog = ({
     title,
     description,
     confirmText = "Confirm",
-    cancelText = "Cancel",
+    cancelText,
     confirmColor = "primary",
   } = config;
 
   return (
     <>
-      <DialogTitle>{title}</DialogTitle>
+      <DialogTitle sx={{p:2}}>{title}</DialogTitle>
 
       {description && (
         <DialogContent>
@@ -45,9 +45,9 @@ export const ConfirmDialog = ({
       )}
 
       <DialogActions>
-        <Button onClick={onClose} disabled={loading}>
+        {cancelText && <Button onClick={onClose} disabled={loading}>
           {cancelText}
-        </Button>
+        </Button>}
 
         <Button
           variant="contained"
@@ -55,6 +55,7 @@ export const ConfirmDialog = ({
           onClick={onConfirm}
           disabled={loading}
           startIcon={loading ? <CircularProgress size={16} /> : undefined}
+          sx={{flexGrow: 1}}
         >
           {confirmText}
         </Button>

@@ -1,0 +1,13 @@
+import { SvgIcon, type SvgIconProps } from "@mui/material";
+import type { ReactElement } from "react";
+
+function TiktokIcon(props: SvgIconProps): ReactElement {
+  return (
+    <SvgIcon {...props} viewBox="0 0 18 20">
+      <path d="M12.5604 0H9.18984V13.6232C9.18984 15.2464 7.89349 16.5797 6.28022 16.5797C4.66695 16.5797 3.37057 15.2464 3.37057 13.6232C3.37057 12.029 4.63814 10.7246 6.19381 10.6667V7.24639C2.7656 7.30433 0 10.1159 0 13.6232C0 17.1594 2.82321 20 6.30904 20C9.79481 20 12.618 17.1304 12.618 13.6232V6.63767C13.8856 7.56522 15.4412 8.11594 17.0833 8.14494V4.72464C14.5482 4.63768 12.5604 2.55072 12.5604 0Z" 
+      fill="currentColor"/>
+    </SvgIcon>
+  );
+}
+
+export default TiktokIcon;

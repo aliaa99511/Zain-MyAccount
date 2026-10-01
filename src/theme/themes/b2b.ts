@@ -1,14 +1,18 @@
 import { createTheme } from "@mui/material/styles";
-import { commonTheme } from "./commonTheme";
+import { commonComponents, commonTheme } from "./commonTheme";
 
 export const b2bLightTheme = createTheme({
-  ...commonTheme,
+  // ...commonTheme,
   palette: {
     mode: "light",
     primary: {
-      main: "#7b1fa2",
+      main: "#5C1E5B",
+      light: "#3F123D",
     },
   },
+  components: {
+    ...commonComponents,
+  }
 });
 
 export const b2bDarkTheme = createTheme({
@@ -19,4 +23,7 @@ export const b2bDarkTheme = createTheme({
       main: "#ce93d8",
     },
   },
+  components: {
+    ...commonComponents,
+  }
 });

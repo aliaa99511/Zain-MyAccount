@@ -5,6 +5,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import Typography from "@mui/material/Typography";
 import { Button } from "@mui/material";
 import { useDialog } from "../shared/dialog/hooks/useDialog";
+import ContactUs from "../pages/contact_us";
 
 // eslint-disable-next-line react-refresh/only-export-components
 function LoginPage(): React.ReactElement {
@@ -19,12 +20,21 @@ function ProfilePage(): React.ReactElement {
   const { confirm } = useDialog();
 
   const handleLogout = async () => {
+    // const confirmed = await confirm({
+    //   title: "Are you sure you want to Logout?",
+    //   description: "Are you sure you want to logout from your account?",
+    //   confirmText: "Logout",
+    //   cancelText: "Cancel",
+    // });
     const confirmed = await confirm({
-      title: "Are you sure you want to Logout?",
-      description: "Are you sure you want to logout from your account?",
-      confirmText: "Logout",
-      cancelText: "Cancel",
-    });
+    title:
+      'You are leaving this site',
+    description:
+      'You are being redirected to Facebook. Are you sure you want to proceed?',
+    confirmText:
+      'Proceed to Facebook',
+    cancelText: "cancel",
+  });
     if (!confirmed) {
       return;
     }
@@ -63,6 +73,10 @@ const router = createBrowserRouter([
       {
         element: <Layout />,
         children: [
+          {
+            path: "/contact-us",
+            element: <ContactUs />,
+          },
           {
             path: "/dashboard",
             element: <DashboardPage />,
