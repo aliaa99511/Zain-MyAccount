@@ -1,31 +1,29 @@
+import type { Theme } from "@mui/material/styles";
+
 export const footerTokens = {
-    height: 44,
+    height: "2.75rem", // 44px
     horizontalPadding: {
-        xs: "12px",
-        sm: "25px",
-        md: "25px 40px",
+        xs: "0.75rem",          // 12px
+        sm: "1.5625rem",        // 25px
+        md: "1.5625rem 2.5rem", // 25px 40px
     },
     linkGap: {
-        xs: "10px",
-        sm: "22px",
-    },
-    colors: {
-        border: "#dedede",
-        text: "#333",
+        xs: "0.625rem", // 10px
+        sm: "1.375rem", // 22px
     },
 };
 
 export const footerStyles = {
     tokens: footerTokens,
 
-    container: {
-        height: `${footerTokens.height}px`,
+    container: (theme: Theme) => ({
+        height: footerTokens.height,
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
         px: footerTokens.horizontalPadding,
-        borderTop: `1px solid ${footerTokens.colors.border}`,
-    },
+        borderTop: `1px solid ${theme.palette.divider}`,
+    }),
 
     linksContainer: {
         display: "flex",
@@ -33,20 +31,20 @@ export const footerStyles = {
         gap: footerTokens.linkGap,
     },
 
-    link: {
-        color: footerTokens.colors.text,
+    link: (theme: Theme) => ({
+        color: theme.palette.text.primary,
         textDecoration: "none",
         "&:hover": {
             textDecoration: "underline",
         },
-    },
+    }),
 
-    separator: {
-        color: footerTokens.colors.text,
-    },
+    separator: (theme: Theme) => ({
+        color: theme.palette.text.primary,
+    }),
 
     version: {
-        marginLeft: {
+        marginInlineStart: {
             xs: "auto",
             sm: 0,
         },

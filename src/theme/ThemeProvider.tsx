@@ -12,7 +12,7 @@ import { rtlCache } from "./rtlCache";
 export function ThemeProvider({ direction, children }: { direction: 'ltr' | 'rtl', children: React.ReactNode }) {
   // const { user } = useAuth();
 
-  const user = { role: USER_ROLES.B2C };
+  const user = { role: USER_ROLES.B2B };
 
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

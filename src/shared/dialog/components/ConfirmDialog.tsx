@@ -32,19 +32,19 @@ export const ConfirmDialog = ({
 
   return (
     <>
-      <DialogTitle sx={{p:2}}>{title}</DialogTitle>
+      <DialogTitle sx={{mb:2, p:0}} variant="h3">{title}</DialogTitle>
 
       {description && (
-        <DialogContent>
+        <DialogContent  sx={{mb:2, p:0}}>
           {typeof description === "string" ? (
-            <Typography>{description}</Typography>
+            <Typography sx={{color: "#525252"}}>{description}</Typography>
           ) : (
             description
           )}
         </DialogContent>
       )}
 
-      <DialogActions>
+      <DialogActions sx={{p:0}}>
         {cancelText && <Button onClick={onClose} disabled={loading}>
           {cancelText}
         </Button>}

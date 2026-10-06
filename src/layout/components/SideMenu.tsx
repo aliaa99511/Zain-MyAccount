@@ -12,8 +12,8 @@ import {
 } from "../../theme/themes/common_components/menuItems";
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import { menuItems } from "../commonComponents/MenuItemsLinks";
-import type { MenuKey } from "../commonComponents/types";
 import MenuContent from "../commonComponents/MenuContent";
+import type { MenuKey } from "../commonComponents/types";
 
 function SideMenu(): React.ReactElement {
     const lang = useContext(LanguageContext);

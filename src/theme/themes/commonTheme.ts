@@ -6,6 +6,8 @@ import { MuiPaper } from "./common_components/paper";
 import { MuiSvgIcon } from "./common_components/svg_icon";
 import { MuiTypography } from "./common_components/typography";
 import { zainFontFaces } from "./fonts";
+import { MuiFormHelperText } from "./common_components/form_helper_text";
+import { MuiOutlinedInput } from "./common_components/outline_input";
 
 export const commonTheme = {
   typography: {
@@ -26,5 +28,7 @@ export const commonComponents = {
   headerDropdownStyles,
   MuiIconButton,
   MuiInputLabel,
-  MuiButton
+  MuiButton,
+  MuiFormHelperText,
+  MuiOutlinedInput,
 }

@@ -9,7 +9,7 @@ interface ContactItems {
   valueEn: string;
   valueAr: string;
   order: number;
-  icon: any;
+  iconDataUri: string;
   segment: any;
 }
 interface SocialLinks {
@@ -17,7 +17,7 @@ interface SocialLinks {
   platform: string;
   link: string;
   sortOrder: number;
-  icon: any;
+  iconDataUri: string;
 }
 interface ContactUsInfo {
   succeeded: boolean;
@@ -30,7 +30,7 @@ interface ContactUsInfo {
     subTitleAr: string;
     showContactForm: boolean;
     contactItems: ContactItems[];
-    socialLinks: SocialLinks[];
+    socialMediaItems: SocialLinks[];
   };
 }
 interface Shop {
@@ -75,7 +75,7 @@ export const ContactUsApi = createApi({
           method: "GET",
         };
       },
-      transformResponse: (response: Promise<Shops>) => response,
+      transformResponse: (response: Promise<Shops>) => response.result ?? [],
     }),
   }),
 });

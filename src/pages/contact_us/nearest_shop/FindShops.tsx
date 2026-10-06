@@ -15,7 +15,7 @@ interface Inputs {
   shop: string,
 }
 
-function FindShops({shopsData, regions, cities, shops, setCities, setShops}:FindShopsPropsTypes) {
+function FindShops({shopsData, regions, cities, shops, setCities, setShops, setFilteredShops}:FindShopsPropsTypes) {
   const languageContext = useContext(LanguageContext);
   const language = languageContext?.language ?? 'En';
   const {register, handleSubmit, control, setValue} = useForm<Inputs>({
@@ -33,6 +33,7 @@ function FindShops({shopsData, regions, cities, shops, setCities, setShops}:Find
         (region) => region["regionName"+language] === selectedRegion
       );
       setCities(selectedRegionObject?.cities ?? []);
+      setShops([]);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   },[selectedRegion])
@@ -56,7 +57,8 @@ function FindShops({shopsData, regions, cities, shops, setCities, setShops}:Find
   },[selectedCity])
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    const filtered = shopsData?.shops.filter(shop => {
+    const filtered:Shops | undefined = {message: "",shops: []};
+    filtered.shops = shopsData?.shops.filter(shop => {
       let isTrue = true;
       if(data.region != "-1"){
         isTrue = isTrue && (shop[`regionName${language}`] == data.region)
@@ -67,9 +69,12 @@ function FindShops({shopsData, regions, cities, shops, setCities, setShops}:Find
       if(data.shop != "-1"){
         isTrue = isTrue && (shop[`shopName${language}`] == data.shop)
       }
+      if(data.keyword.trim().length > 0){
+        isTrue = isTrue && (shop[`nearbyLandmarks${language}`].toLowerCase().includes(data.keyword.toLowerCase()) || shop[`shopName${language}`].toLowerCase().includes(data.keyword.toLowerCase()))
+      }
       return isTrue;
     })
-    console.log(filtered)
+    setFilteredShops(filtered)
   }
 
   return (

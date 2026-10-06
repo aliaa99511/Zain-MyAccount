@@ -7,6 +7,18 @@ export const contact_us_sentences = {
     En: "We provide multiple communication channels to make it easier for customers to reach us.",
     Ar: "نوفر قنوات تواصل متعددة لتسهيل تواصل العملاء معنا.",
   },
+  ContactInformationConfirmTitle: {
+    En: "You are leaving this site",
+    Ar: "أنت تغادر هذا الموقع",
+  },
+  ContactInformationConfirmDescription: {
+    En: "You are being redirected to an external site. Are you sure you want to proceed?",
+    Ar: "يتم الآن تحويلك إلى موقع خارجي. هل أنت متأكد من رغبتك في المتابعة؟",
+  },
+  ContactInformationConfirmButton: {
+    En: "Proceed to External Site",
+    Ar: "الانتقال إلى الموقع الخارجي",
+  },
   SendMessageTitle: {
     En: "Send us a message",
     Ar: "أرسل لنا رسالة",

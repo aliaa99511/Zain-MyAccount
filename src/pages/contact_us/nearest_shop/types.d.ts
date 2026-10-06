@@ -39,4 +39,5 @@ interface FindShopsPropsTypes {
   shops: InnerShop[];
   setCities: React.Dispatch<React.SetStateAction<City[]>>;
   setShops: React.Dispatch<React.SetStateAction<InnerShop[]>>;
+  setFilteredShops: React.Dispatch<React.SetStateAction<Shops | undefined>>;
 }

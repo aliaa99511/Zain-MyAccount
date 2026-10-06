@@ -18,10 +18,12 @@ import { layout_sentences } from "../../configurations/language";
 import { profileMenuStyles } from "../../theme/themes/common_components/ProfileMenu";
 import type { MenuKey } from "../commonComponents/types";
 import MenuContent from "../commonComponents/MenuContent";
+import { useTheme } from "@mui/material/styles";
 
 type Appearance = "light" | "dark";
 
 function ProfileMenu(): React.ReactElement {
+    const theme = useTheme();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [appearance, setAppearance] = useState<Appearance>("light");
 
@@ -67,16 +69,14 @@ function ProfileMenu(): React.ReactElement {
         <>
             {/* Profile Trigger */}
             <Avatar
+                sx={profileMenuStyles.avatar}
                 onClick={handleClick}
-                sx={{
-                    ...profileMenuStyles.avatar,
-                    ...profileMenuStyles.trigger,
-                }}
                 aria-label="Open profile menu"
                 aria-haspopup="menu"
-                aria-expanded={open}
-            >
-                <Typography variant="subtitle1">MT</Typography>
+                aria-expanded={open}>
+                <Typography variant="subtitle1">
+                    MT
+                </Typography>
             </Avatar>
 
             {/* Profile Menu */}
@@ -153,8 +153,7 @@ function ProfileMenu(): React.ReactElement {
 
                     <Box sx={profileMenuStyles.modeContainer}>
                         {appearanceOptions.map((option) => {
-                            const isSelected =
-                                appearance === option.value;
+                            const isSelected = appearance === option.value;
 
                             return (
                                 <Box
@@ -166,13 +165,7 @@ function ProfileMenu(): React.ReactElement {
                                     }
                                     aria-pressed={isSelected}
                                     sx={{
-                                        ...profileMenuStyles.modeItem,
-                                        color: isSelected
-                                            ? "#fff"
-                                            : profileMenuStyles.tokens.colors.inactive,
-                                        bgcolor: isSelected
-                                            ? profileMenuStyles.tokens.colors.active
-                                            : "transparent",
+                                        ...profileMenuStyles.modeItem(theme, isSelected),
                                         border: 0,
                                     }}
                                 >

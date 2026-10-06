@@ -1,9 +1,7 @@
-import { LayoutIconsStyles } from '../../theme/themes/common_components/LayoutIcons';
 import TicketPercentIcon from "../../shared/icons/Ticket_percent";
 import StickerAlertIcon from "../../shared/icons/Sticker_alert";
 import CommentPlusIcon from "../../shared/icons/Comment_plus";
 import CashIcon from "../../shared/icons/Cash";
-import FlashIcon from "../../shared/icons/Flash";
 import InvoiceListIcon from "../../shared/icons/Invoice_list";
 import WalletIcon from "../../shared/icons/Wallet";
 import { SupportAgentOutlined } from "@mui/icons-material";
@@ -13,77 +11,79 @@ import ListAltOutlinedIcon from '@mui/icons-material/ListAltOutlined';
 import SwapVertOutlinedIcon from '@mui/icons-material/SwapVertOutlined';
 import LocalPhoneOutlinedIcon from '@mui/icons-material/LocalPhoneOutlined';
 import type { MenuItem } from './types';
+import { MenuIcon } from './MenuIcon';
+import FlashIcon from '../../shared/icons/Flash';
 
 export const menuItems: MenuItem[] = [
     {
         label: "Dashboard",
-        icon: <SpaceDashboardOutlinedIcon sx={LayoutIconsStyles} />,
+        icon: <MenuIcon Icon={SpaceDashboardOutlinedIcon} />,
         path: "/",
     },
     {
         label: "Offerings",
-        icon: <TicketPercentIcon sx={LayoutIconsStyles} />,
+        icon: <MenuIcon Icon={TicketPercentIcon} />,
         path: "/offerings",
     },
     {
         label: "Complaints",
-        icon: <StickerAlertIcon sx={LayoutIconsStyles} />,
+        icon: <MenuIcon Icon={StickerAlertIcon} />,
         children: [
             {
                 label: "SubmitComplaint",
-                icon: <CommentPlusIcon sx={LayoutIconsStyles} />,
+                icon: <MenuIcon Icon={CommentPlusIcon} />,
                 path: "/contact-us",
             },
             {
                 label: "ComplaintsHistory",
-                icon: <ListAltOutlinedIcon sx={LayoutIconsStyles} />,
+                icon: <MenuIcon Icon={ListAltOutlinedIcon} />,
                 path: "/live-chat",
             },
         ],
     },
     {
         label: "PaymentsAndRecharge",
-        icon: <CashIcon sx={LayoutIconsStyles} />,
+        icon: <MenuIcon Icon={CashIcon} />,
         children: [
             {
                 label: "Recharge",
-                icon: <FlashIcon sx={LayoutIconsStyles} />,
+                icon: <MenuIcon Icon={FlashIcon} />,
                 path: "/recharge",
             },
             {
                 label: "PayBill",
-                icon: <InvoiceListIcon sx={LayoutIconsStyles} />,
+                icon: <MenuIcon Icon={InvoiceListIcon} />,
                 path: "/payments",
             },
             {
                 label: "Transfer",
-                icon: <SwapVertOutlinedIcon sx={LayoutIconsStyles} />,
+                icon: <MenuIcon Icon={SwapVertOutlinedIcon} />,
                 path: "/payments",
             },
             {
                 label: "BalanceEnquiry",
-                icon: <WalletIcon sx={LayoutIconsStyles} />,
+                icon: <MenuIcon Icon={WalletIcon} />,
                 path: "/recharge",
             },
             {
                 label: "TransactionsLog",
-                icon: <ListAltOutlinedIcon sx={LayoutIconsStyles} />,
+                icon: <MenuIcon Icon={ListAltOutlinedIcon} />,
                 path: "/recharge",
             },
         ],
     },
     {
         label: "Support",
-        icon: <SupportAgentOutlined sx={LayoutIconsStyles} />,
+        icon: <SupportAgentOutlined />,
         children: [
             {
                 label: "ContactUs",
-                icon: <LocalPhoneOutlinedIcon sx={LayoutIconsStyles} />,
+                icon: <MenuIcon Icon={LocalPhoneOutlinedIcon} />,
                 path: "/contact-us",
             },
             {
                 label: "FAQ",
-                icon: <TooltipQuestionIcon sx={LayoutIconsStyles} />,
+                icon: <MenuIcon Icon={TooltipQuestionIcon} />,
                 path: "/faq",
             },
         ],

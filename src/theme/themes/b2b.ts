@@ -2,7 +2,7 @@ import { createTheme } from "@mui/material/styles";
 import { commonComponents, commonTheme } from "./commonTheme";
 
 export const b2bLightTheme = createTheme({
-  // ...commonTheme,
+  ...commonTheme,
   palette: {
     mode: "light",
     primary: {

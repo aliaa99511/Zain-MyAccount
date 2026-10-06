@@ -1,11 +1,15 @@
+import React from "react";
 import { Box, IconButton } from "@mui/material";
 import { useNavigate } from "react-router";
+import { useTheme } from "@mui/material/styles";
+
 import { floatingActionsStyles } from "../../theme/themes/common_components/floatingActions";
 import ChatOutlinedIcon from "@mui/icons-material/ChatOutlined";
 import ZainChatbot from "../../../public/zain-chatbot.png";
 
 function FloatingActions(): React.ReactElement {
     const navigate = useNavigate();
+    const theme = useTheme();
 
     return (
         <Box sx={floatingActionsStyles.container}>
@@ -13,8 +17,8 @@ function FloatingActions(): React.ReactElement {
             <IconButton
                 onClick={() => navigate("/support/live-chat")}
                 sx={{
-                    ...floatingActionsStyles.actionButton,
-                    ...floatingActionsStyles.liveChatButton,
+                    ...floatingActionsStyles.actionButton(theme),
+                    ...floatingActionsStyles.liveChatButton(theme),
                 }}
             >
                 <ChatOutlinedIcon />
@@ -23,8 +27,8 @@ function FloatingActions(): React.ReactElement {
             {/* Chatbot */}
             <IconButton
                 sx={{
-                    ...floatingActionsStyles.actionButton,
-                    ...floatingActionsStyles.chatbotButton,
+                    ...floatingActionsStyles.actionButton(theme),
+                    ...floatingActionsStyles.chatbotButton(theme),
                 }}
             >
                 <Box

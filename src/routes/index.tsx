@@ -6,6 +6,8 @@ import Typography from "@mui/material/Typography";
 import { Button } from "@mui/material";
 import { useDialog } from "../shared/dialog/hooks/useDialog";
 import ContactUs from "../pages/contact_us";
+import CreateAccount from "../pages/create_account";
+import FAQs from "../pages/faq";
 
 // eslint-disable-next-line react-refresh/only-export-components
 function LoginPage(): React.ReactElement {
@@ -27,14 +29,14 @@ function ProfilePage(): React.ReactElement {
     //   cancelText: "Cancel",
     // });
     const confirmed = await confirm({
-    title:
-      'You are leaving this site',
-    description:
-      'You are being redirected to Facebook. Are you sure you want to proceed?',
-    confirmText:
-      'Proceed to Facebook',
-    cancelText: "cancel",
-  });
+      title:
+        'You are leaving this site',
+      description:
+        'You are being redirected to Facebook. Are you sure you want to proceed?',
+      confirmText:
+        'Proceed to Facebook',
+      cancelText: "cancel",
+    });
     if (!confirmed) {
       return;
     }
@@ -47,10 +49,6 @@ function ProfilePage(): React.ReactElement {
 function SettingsPage(): React.ReactElement {
   return <div>Settings Page</div>;
 }
-// eslint-disable-next-line react-refresh/only-export-components
-function RegisterPage(): React.ReactElement {
-  return <div>Register Page</div>;
-}
 
 const router = createBrowserRouter([
   // -------------------------
@@ -61,8 +59,8 @@ const router = createBrowserRouter([
     element: <LoginPage />,
   },
   {
-    path: "/register",
-    element: <RegisterPage />,
+    path: "/create_account",
+    element: <CreateAccount />,
   },
   // -------------------------
   // Protected routes
@@ -76,6 +74,10 @@ const router = createBrowserRouter([
           {
             path: "/contact-us",
             element: <ContactUs />,
+          },
+          {
+            path: "/faq",
+            element: <FAQs />,
           },
           {
             path: "/dashboard",

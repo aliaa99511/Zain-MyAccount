@@ -1,54 +1,40 @@
+import { alpha, type Theme } from "@mui/material/styles";
 
 const headerTokens = {
-    height: 70,
-    horizontalPadding: 16,
-    itemHeight: 46,
-    iconSize: 38,
+    height: "4.375rem", // 70px
+    horizontalPadding: "1rem", // 16px
+    logoWidth: "5.625rem", // 90px
+    logoHeight: "1.5rem", // 24px
+    itemHeight: "2.875rem", // 46px
+    languageHeight: "2.375rem", // 38px
+    iconSize: "2.375rem", // 38px
+    inviteIconSize: "1.375rem", // 22px
     iconLabelGap: 1,
-
-    colors: {
-        text: "#fff",
-        background: "#fff",
-        border: "#dedede",
-        iconBackground: "rgba(255, 255, 255, 0.1)",
-        shadow: "0 4px 16px rgba(0,0,0,0.15)",
-    },
-
-    gradient: "linear-gradient(90deg, #00B3C7 0%, #953193 100%)",
 };
 
 export const headerStyles = {
     tokens: headerTokens,
 
-    common: {
-        content: {
-            display: "flex",
-            alignItems: "center",
-            gap: headerTokens.iconLabelGap,
-            minWidth: 0,
-        },
-
-        label: {
-            whiteSpace: "nowrap",
-        },
-
-        icon: {
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            flexShrink: 0,
-        },
-    },
-
-    container: {
+    container: (theme: Theme) => ({
         width: "100%",
         height: headerTokens.height,
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        px: `${headerTokens.horizontalPadding}px`,
-        color: headerTokens.colors.text,
-        background: headerTokens.gradient,
+        px: headerTokens.horizontalPadding,
+        color: theme.palette.primary.contrastText,
+        background: `linear-gradient(
+            90deg,
+            ${theme.palette.primary.light ?? theme.palette.primary.main} 0%,
+            ${theme.palette.secondary.main} 100%
+        )`,
+    }),
+
+    logo: {
+        width: headerTokens.logoWidth,
+        height: headerTokens.logoHeight,
+        objectFit: "contain",
+        flexShrink: 0,
     },
 
     leftSection: {
@@ -74,37 +60,77 @@ export const headerStyles = {
         },
     },
 
-    dropdown: {
+    common: {
+        content: {
+            display: "flex",
+            alignItems: "center",
+            gap: headerTokens.iconLabelGap,
+            minWidth: 0,
+        },
+
+        label: {
+            whiteSpace: "nowrap",
+        },
+
+        icon: {
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexShrink: 0,
+        },
+    },
+
+    dropdown: (theme: Theme) => ({
         height: headerTokens.itemHeight,
         display: "flex",
         alignItems: "center",
         gap: headerTokens.iconLabelGap,
         cursor: "pointer",
-        color: headerTokens.colors.text,
+        color: theme.palette.primary.contrastText,
         whiteSpace: "nowrap",
-    },
+    }),
 
-    iconButton: {
+    languageDropdown: (theme: Theme) => ({
+        ...headerStyles.dropdown(theme),
+        height: headerTokens.languageHeight,
+    }),
+
+    iconButton: (theme: Theme) => ({
         width: headerTokens.iconSize,
         height: headerTokens.iconSize,
-        color: headerTokens.colors.text,
-        backgroundColor: headerTokens.colors.iconBackground,
+        color: theme.palette.primary.contrastText,
+        backgroundColor: alpha(theme.palette.primary.contrastText, 0.1),
         flexShrink: 0,
+        "&:hover": {
+            backgroundColor: alpha(
+                theme.palette.primary.contrastText,
+                0.18
+            ),
+        },
+    }),
+
+    inviteIcon: {
+        width: headerTokens.inviteIconSize,
+        height: headerTokens.inviteIconSize,
     },
 
     menu: {
-        paper: {
+        paper: (theme: Theme) => ({
             mt: 1,
             borderRadius: 2,
-            boxShadow: headerTokens.colors.shadow,
-        },
+            boxShadow: `0 0.25rem 1rem ${alpha(
+                theme.palette.common.black,
+                0.15
+            )}`,
+        }),
 
         phone: {
-            minWidth: 200,
+            minWidth: "12.5rem",
         },
 
         language: {
-            minWidth: 95,
+            minWidth: "5.9375rem",
         },
     },
 };
+

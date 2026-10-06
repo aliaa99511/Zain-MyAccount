@@ -1,18 +1,15 @@
-
 import React, { useContext, useState } from "react";
-import {
-    Box,
-    IconButton,
-    Typography,
-} from "@mui/material";
+import { Box, IconButton, Typography } from "@mui/material";
 import {
     ArrowDropDown,
     NotificationsNoneOutlined,
 } from "@mui/icons-material";
 import SmartphoneOutlinedIcon from "@mui/icons-material/SmartphoneOutlined";
+
 import AccountMultiplePlusIcon from "../../shared/icons/Account_multiple_plus";
 import GlobeIcon from "../../shared/icons/Globe";
 import ZainLogo from "../../../public/zain-logo.png";
+
 import { LanguageContext } from "../../App";
 import { headerStyles } from "../../theme/themes/common_components/header";
 import { MuiHeaderDropdown } from "../commonComponents/HeaderDropdown";
@@ -30,10 +27,15 @@ const languageOptions = [
 ];
 
 function Header(): React.ReactElement {
-    const [numberAnchor, setNumberAnchor] = useState<null | HTMLElement>(null);
-    const [languageAnchor, setLanguageAnchor] = useState<null | HTMLElement>(null);
+    const [numberAnchor, setNumberAnchor] = useState<null | HTMLElement>(
+        null
+    );
+
+    const [languageAnchor, setLanguageAnchor] =
+        useState<null | HTMLElement>(null);
 
     const languageContext = useContext(LanguageContext);
+
     const language = languageContext?.language ?? "En";
     const setLanguage = languageContext?.setLanguage;
 
@@ -68,7 +70,7 @@ function Header(): React.ReactElement {
                     component="img"
                     src={ZainLogo}
                     alt="Zain"
-                    sx={{ width: 90, height: 24, objectFit: "contain" }}
+                    sx={headerStyles.logo}
                 />
 
                 {/* Phone Selector */}
@@ -79,7 +81,10 @@ function Header(): React.ReactElement {
                     sx={headerStyles.dropdown}
                 >
                     {renderDropdownContent(
-                        <IconButton sx={headerStyles.iconButton}>
+                        <IconButton
+                            disableRipple
+                            sx={headerStyles.iconButton}
+                        >
                             <SmartphoneOutlinedIcon />
                         </IconButton>,
                         "+249 91 234 5678"
@@ -92,6 +97,7 @@ function Header(): React.ReactElement {
                     options={phoneOptions}
                     onSelect={(value) => {
                         console.log("Selected number:", value);
+                        setNumberAnchor(null);
                     }}
                     paperSx={{
                         ...headerStyles.menu.paper,
@@ -107,10 +113,7 @@ function Header(): React.ReactElement {
                     onClick={(event) =>
                         setLanguageAnchor(event.currentTarget)
                     }
-                    sx={{
-                        ...headerStyles.dropdown,
-                        height: 38,
-                    }}
+                    sx={headerStyles.languageDropdown}
                 >
                     {renderDropdownContent(
                         <GlobeIcon />,
@@ -140,7 +143,7 @@ function Header(): React.ReactElement {
                 {/* Invite */}
                 <IconButton sx={headerStyles.iconButton}>
                     <AccountMultiplePlusIcon
-                        sx={{ width: 22, height: 22 }}
+                        sx={headerStyles.inviteIcon}
                     />
                 </IconButton>
 
