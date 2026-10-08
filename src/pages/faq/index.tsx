@@ -21,7 +21,7 @@ import FAQCategories from "./FAQCategories";
 import FAQAccordion from "./FAQAccordion";
 import { faqMatchesSearch } from "./faq_utils";
 import FAQSkeleton from "./FAQSkeleton";
-import { faqs_sentences } from "../../configurations/language/pages/FAQs";
+import { faqs_sentences } from "../../configurations/language";
 
 // interface FAQsProps {
 //     segment: FAQSegment;

@@ -1,5 +1,5 @@
-import React from "react";
-import { Box } from "@mui/material";
+import React, { useState } from "react";
+import { Box, Drawer } from "@mui/material";
 import { Outlet } from "react-router";
 import Footer from "./components/Footer";
 import FloatingActions from "./components/FloatingActions";
@@ -7,9 +7,22 @@ import SideMenu from "./components/SideMenu";
 import Header from "./components/Header";
 
 function Layout(): React.ReactElement {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const handleMobileMenuToggle = () => {
+    setMobileMenuOpen((current) => !current);
+  };
+
+  const handleMobileMenuClose = () => {
+    setMobileMenuOpen(false);
+  };
+
   return (
     <Box>
-      <Header />
+      <Header
+        onMenuClick={handleMobileMenuToggle}
+        isMobileMenuOpen={mobileMenuOpen}
+      />
 
       <Box
         sx={{
@@ -18,7 +31,36 @@ function Layout(): React.ReactElement {
           overflow: "hidden",
         }}
       >
-        <SideMenu />
+        {/* Desktop Sidebar */}
+        <Box
+          sx={{
+            display: {
+              xs: "none",
+              md: "block",
+            },
+            height: "100%",
+          }}
+        >
+          <SideMenu />
+        </Box>
+
+        {/* Mobile Sidebar */}
+        <Drawer
+          anchor="left"
+          open={mobileMenuOpen}
+          onClose={handleMobileMenuClose}
+          sx={{
+            display: {
+              xs: "block",
+              md: "none",
+            },
+            "& .MuiDrawer-paper": {
+              width: "212px",
+            },
+          }}
+        >
+          <SideMenu />
+        </Drawer>
 
         <Box
           sx={{
@@ -34,7 +76,11 @@ function Layout(): React.ReactElement {
               flex: 1,
               minHeight: 0,
               overflow: "auto",
-              p: "20px",
+              p: {
+                xs: "12px",
+                sm: "16px",
+                md: "20px",
+              },
             }}
           >
             <Outlet />

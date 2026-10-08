@@ -31,8 +31,14 @@ export const headerStyles = {
     }),
 
     logo: {
-        width: headerTokens.logoWidth,
-        height: headerTokens.logoHeight,
+        width: {
+            xs: "4.5rem",
+            sm: "5.625rem",
+        },
+        height: {
+            xs: "1.25rem",
+            sm: "1.5rem",
+        },
         objectFit: "contain",
         flexShrink: 0,
     },
@@ -48,16 +54,21 @@ export const headerStyles = {
             lg: 13.75,
         },
         minWidth: 0,
+
+        [`@media (max-width: 43.75rem)`]: {
+            gap: 1,
+        },
     },
 
     rightSection: {
         display: "flex",
         alignItems: "center",
         gap: {
-            xs: 0.5,
+            xs: 0.25,
             sm: 1,
             md: 2,
         },
+        minWidth: 0,
     },
 
     common: {
@@ -132,5 +143,12 @@ export const headerStyles = {
             minWidth: "5.9375rem",
         },
     },
+    mobileMenuButton: {
+        display: {
+            xs: "block",
+            md: "none",
+        },
+    },
 };
+
 

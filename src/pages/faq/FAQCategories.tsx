@@ -37,9 +37,7 @@ function FAQCategories({
                     >
                         <CardActionArea
                             onClick={() =>
-                                onCategoryClick(
-                                    category.code
-                                )
+                                onCategoryClick(category.code)
                             }
                             sx={faqStyles.categoryAction}
                         >

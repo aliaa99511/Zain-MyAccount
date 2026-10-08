@@ -1,4 +1,4 @@
-import { type Theme } from "@mui/material/styles";
+import { alpha, type Theme } from "@mui/material/styles";
 
 // Sizes only – colors come from the theme
 const faqTokens = {
@@ -57,7 +57,7 @@ export const faqStyles = {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: theme.palette.primary.light,
+        backgroundColor: alpha(theme.palette.primary.main, 0.3),
         color: theme.palette.primary.main,
         flexShrink: 0,
     }),
@@ -87,12 +87,11 @@ export const faqStyles = {
         },
     }),
 
-    accordionSummary: {
-        // minHeight: faqTokens.accordionMinHeight,
-        // px: faqTokens.horizontalPadding,
+    accordionSummary: (theme: Theme) => ({
         "& .MuiAccordionSummary-content": {
             // margin: "1rem 0",
         },
+
         "& .MuiAccordionSummary-expandIconWrapper": {
             width: "1.5rem",
             height: "1.5rem",
@@ -100,16 +99,16 @@ export const faqStyles = {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            backgroundColor: "#0153A5",
+            backgroundColor: theme.palette.primary.main,
             color: "#FFFFFF",
             flexShrink: 0,
             transition: "transform 0.2s ease",
+
             "& svg": {
                 color: "#FFFFFF",
             },
         },
-    },
-
+    }),
     question: (theme: Theme, language: "En" | "Ar") => ({
         color: theme.palette.primary.main,
         fontWeight: 500,

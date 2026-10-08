@@ -19,15 +19,11 @@ function FAQAccordion({
     items,
     language,
 }: FAQAccordionProps): React.ReactElement {
-    const [expanded, setExpanded] =
-        useState<number | false>(false);
+    const [expanded, setExpanded] = useState<number | false>(false);
 
     const handleChange =
         (panel: number) =>
-            (
-                _event: React.SyntheticEvent,
-                isExpanded: boolean
-            ) => {
+            (_event: React.SyntheticEvent, isExpanded: boolean) => {
                 setExpanded(
                     isExpanded ? panel : false
                 );
@@ -45,12 +41,10 @@ function FAQAccordion({
                 return (
                     <Accordion
                         key={item.id}
-                        expanded={
-                            expanded === item.id
+                        expanded={expanded === item.id}
+                        onChange={
+                            handleChange(item.id)
                         }
-                        onChange={handleChange(
-                            item.id
-                        )}
                         disableGutters
                         elevation={0}
                         sx={(theme) =>
@@ -58,10 +52,8 @@ function FAQAccordion({
                         }
                     >
                         <AccordionSummary
-                            expandIcon={
-                                <ExpandMoreIcon />
-                            }
-                            sx={faqStyles.accordionSummary}
+                            expandIcon={<ExpandMoreIcon />}
+                            sx={(theme) => faqStyles.accordionSummary(theme)}
                         >
                             <Typography
                                 sx={(theme) =>

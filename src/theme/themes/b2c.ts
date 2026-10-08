@@ -3,20 +3,28 @@ import { commonComponents, commonTheme } from "./commonTheme";
 
 export const b2cLightTheme = createTheme({
   ...commonTheme,
+
   palette: {
     mode: "light",
+
     primary: {
       main: "#008A99",
       light: "#00B3C7",
     },
+
     background: {
       default: "#f5f7fa",
       paper: "#ffffff",
     },
+
+    // faq: {
+    //   arrow: "#008A99",
+    // },
   },
+
   components: {
     ...commonComponents,
-  }
+  },
 });
 
 export const b2cDarkTheme = createTheme({

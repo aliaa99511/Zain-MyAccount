@@ -2,14 +2,13 @@ import React, { useContext, useState } from "react";
 import { Box, IconButton, Typography } from "@mui/material";
 import {
     ArrowDropDown,
+    Menu as MenuIcon,
     NotificationsNoneOutlined,
 } from "@mui/icons-material";
 import SmartphoneOutlinedIcon from "@mui/icons-material/SmartphoneOutlined";
-
 import AccountMultiplePlusIcon from "../../shared/icons/Account_multiple_plus";
 import GlobeIcon from "../../shared/icons/Globe";
 import ZainLogo from "../../../public/zain-logo.png";
-
 import { LanguageContext } from "../../App";
 import { headerStyles } from "../../theme/themes/common_components/header";
 import { MuiHeaderDropdown } from "../commonComponents/HeaderDropdown";
@@ -26,7 +25,15 @@ const languageOptions = [
     { label: "EN", value: "En" },
 ];
 
-function Header(): React.ReactElement {
+type HeaderProps = {
+    onMenuClick: () => void;
+    isMobileMenuOpen: boolean;
+};
+
+function Header({
+    onMenuClick,
+    isMobileMenuOpen,
+}: HeaderProps): React.ReactElement {
     const [numberAnchor, setNumberAnchor] = useState<null | HTMLElement>(
         null
     );
@@ -64,6 +71,18 @@ function Header(): React.ReactElement {
 
     return (
         <Box sx={headerStyles.container}>
+
+            <Box sx={headerStyles.mobileMenuButton}>
+                <IconButton
+                    onClick={onMenuClick}
+                    aria-label="Open navigation menu"
+                    aria-expanded={isMobileMenuOpen}
+                    sx={headerStyles.iconButton}
+                >
+                    <MenuIcon />
+                </IconButton>
+            </Box>
+
             {/* Left Section */}
             <Box sx={headerStyles.leftSection}>
                 <Box
@@ -74,22 +93,31 @@ function Header(): React.ReactElement {
                 />
 
                 {/* Phone Selector */}
-                <MuiHeaderDropdown
-                    onClick={(event) =>
-                        setNumberAnchor(event.currentTarget)
-                    }
-                    sx={headerStyles.dropdown}
+                <Box
+                    sx={{
+                        display: {
+                            xs: "none",
+                            sm: "flex",
+                        },
+                    }}
                 >
-                    {renderDropdownContent(
-                        <IconButton
-                            disableRipple
-                            sx={headerStyles.iconButton}
-                        >
-                            <SmartphoneOutlinedIcon />
-                        </IconButton>,
-                        "+249 91 234 5678"
-                    )}
-                </MuiHeaderDropdown>
+                    <MuiHeaderDropdown
+                        onClick={(event) =>
+                            setNumberAnchor(event.currentTarget)
+                        }
+                        sx={headerStyles.dropdown}
+                    >
+                        {renderDropdownContent(
+                            <IconButton
+                                disableRipple
+                                sx={headerStyles.iconButton}
+                            >
+                                <SmartphoneOutlinedIcon />
+                            </IconButton>,
+                            "+249 91 234 5678"
+                        )}
+                    </MuiHeaderDropdown>
+                </Box>
 
                 <HeaderMenu
                     anchorEl={numberAnchor}
@@ -141,11 +169,20 @@ function Header(): React.ReactElement {
                 </IconButton>
 
                 {/* Invite */}
-                <IconButton sx={headerStyles.iconButton}>
-                    <AccountMultiplePlusIcon
-                        sx={headerStyles.inviteIcon}
-                    />
-                </IconButton>
+                <Box
+                    sx={{
+                        display: {
+                            xs: "none",
+                            sm: "block",
+                        },
+                    }}
+                >
+                    <IconButton sx={headerStyles.iconButton}>
+                        <AccountMultiplePlusIcon
+                            sx={headerStyles.inviteIcon}
+                        />
+                    </IconButton>
+                </Box>
 
                 {/* Profile */}
                 <ProfileMenu />
