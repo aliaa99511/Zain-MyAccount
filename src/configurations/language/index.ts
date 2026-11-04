@@ -1,4 +1,11 @@
+export { general_sentences } from "./general";
 export { contact_us_sentences } from "./pages/contact_us";
 export { layout_sentences } from "./pages/layout"
 export { faqs_sentences } from "./pages/faqs"
 export { create_account_sentences } from "./pages/create_account"
+export { login_sentences } from "./pages/login"
+export { security_questions_sentences } from "./pages/security_questions"
+export { password_sentences } from "./pages/password"
+export { change_password_sentences } from "./pages/change_password"
+export { otp_sentences } from "./pages/otp"
+export { complaints_sentences } from "./pages/complaints"

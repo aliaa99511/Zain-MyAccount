@@ -2,7 +2,9 @@ import React, { useContext, useState } from "react";
 import {
     Avatar,
     Box,
+    Button,
     Divider,
+    Grid,
     Menu,
     Typography,
 } from "@mui/material";
@@ -19,13 +21,23 @@ import { profileMenuStyles } from "../../theme/themes/common_components/ProfileM
 import type { MenuKey } from "../commonComponents/types";
 import MenuContent from "../commonComponents/MenuContent";
 import { useTheme } from "@mui/material/styles";
+import { useNavigate } from "react-router";
+import { useDialog } from "../../shared/dialog/hooks/useDialog";
+import { useLogoutMutation } from "../../store";
+import { useAuth } from "../../auth/useAuth";
 
 type Appearance = "light" | "dark";
 
 function ProfileMenu(): React.ReactElement {
+    const languageContext = useContext(LanguageContext);
+    const language = languageContext?.language ?? 'En';
     const theme = useTheme();
+    const {customDialog, closeDialog} = useDialog();
+    const {logout} = useAuth();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [appearance, setAppearance] = useState<Appearance>("light");
+    const navigate = useNavigate();
+    const [logoutFromAccount, {isLoading: isLoggingout}] = useLogoutMutation();
 
     const lang = useContext(LanguageContext);
 
@@ -51,6 +63,34 @@ function ProfileMenu(): React.ReactElement {
     const handleAppearanceChange = (mode: Appearance) => {
         setAppearance(mode);
     };
+
+    const handleChangePassword = () => {
+        navigate("/change_password");
+    };
+    const handleModifySecurityQuestions = () => {
+        navigate("/modify_security_questions");
+    };
+
+    const handleLogout = async() => {
+        logoutFromAccount({}).then(() => {
+            logout();
+            closeDialog();
+        })
+    }
+    const handleLogoutDialog = async () => {
+        await customDialog({
+            title: layout_sentences.AddAccountTitle[language],
+            content: layout_sentences.AddAccountDescription[language],
+            actions: <Grid container sx={{width: '100%'}} spacing={2}> 
+                <Grid size={{xs: 12, md: 'grow'}}>
+                    <Button variant="outlined" color="error" fullWidth onClick={() => handleLogout()} loading={isLoggingout}>Logout</Button>
+                </Grid>
+                <Grid size={{xs: 12, md: 'grow'}}>
+                    <Button variant="contained" color="info" fullWidth onClick={() => closeDialog()}>Cancel</Button>
+                </Grid>
+            </Grid>
+        })
+    }
 
     const appearanceOptions = [
         {
@@ -121,7 +161,7 @@ function ProfileMenu(): React.ReactElement {
 
                 {/* Account Actions */}
                 <Box
-                    onClick={handleClose}
+                    onClick={handleChangePassword}
                     sx={profileMenuStyles.item}
                 >
                     <MenuContent
@@ -131,7 +171,7 @@ function ProfileMenu(): React.ReactElement {
                 </Box>
 
                 <Box
-                    onClick={handleClose}
+                    onClick={handleModifySecurityQuestions}
                     sx={profileMenuStyles.item}
                 >
                     <MenuContent
@@ -184,8 +224,10 @@ function ProfileMenu(): React.ReactElement {
                 {/* Logout */}
                 <Box sx={profileMenuStyles.bottomSection}>
                     <Box
-                        onClick={handleClose}
+                        onClick={handleLogoutDialog}
                         sx={profileMenuStyles.logout}
+                        role="button"
+                        tabIndex={0}
                     >
                         <MenuContent
                             icon={<LogoutOutlinedIcon />}

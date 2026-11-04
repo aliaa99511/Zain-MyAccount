@@ -159,6 +159,7 @@ export type ConfirmOptions = Omit<ConfirmDialogConfig, "type">;
 export type AlertOptions = Omit<AlertDialogConfig, "type">;
 
 export type FeedbackOptions = Omit<FeedbackDialogConfig, "type">;
+export type CustomOptions = Omit<CustomDialogConfig, "type">;
 /**
  * Runtime information used internally by DialogProvider.
  */

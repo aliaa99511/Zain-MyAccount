@@ -23,6 +23,15 @@ export const MuiTypography = {
       props: { variant: "h3" } as Partial<TypographyProps>,
       style: {
         fontWeight: 700,
+        fontSize: "1.625rem",
+        marginBottom: "8px",
+        lineHeight: "100%",
+      },
+    },
+    {
+      props: { variant: "h4" } as Partial<TypographyProps>,
+      style: {
+        fontWeight: 700,
         fontSize: "1.375rem",
         marginBottom: "8px",
         lineHeight: "100%",

@@ -1,11 +1,6 @@
 
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
-export type FAQSegment =
-    | "B2C_Prepaid"
-    | "B2C_Postpaid"
-    | "B2B_Prepaid"
-    | "B2B_Postpaid";
+import { createApi } from "@reduxjs/toolkit/query/react";
+import { baseQueryWithAuth } from "./base_api";
 
 export interface FAQItem {
     id: number;
@@ -27,11 +22,20 @@ export interface FAQCategory {
     segment: unknown;
 }
 
+export interface FAQSubGroup {
+    id: number;
+    code: string;
+    nameEn: string;
+    nameAr: string;
+    sortOrder: number;
+    items: FAQItem[];
+}
+
 export interface FAQGroup {
     id: number;
     code: string;
     sortOrder: number;
-    items: FAQItem[];
+    faqSubGrouped: FAQSubGroup[];
 }
 
 interface ApiResponse<T> {
@@ -51,46 +55,43 @@ interface NestedApiResponse<T> {
 export const FAQsApi = createApi({
     reducerPath: "FAQsApi",
 
-    baseQuery: fetchBaseQuery({
-        baseUrl: "http://172.191.7.149:7777/api/",
-    }),
+    baseQuery: baseQueryWithAuth,
 
     tagTypes: ["FAQs"],
+
     endpoints: (builder) => ({
-        // 1. Get category information for the segment.
-        getGroupInfo: builder.query<FAQCategory[], FAQSegment>({
-            query: (segment) => ({
-                url: `FAQs/GetGroupInfo/${segment}`,
-                method: "GET",
-            }),
+        // 1. Get all main categories.
+        getGroupsInfo: builder.query<FAQCategory[], void>({
+            query: () => "FAQs/GetGroupsInfo",
 
-            transformResponse: (response: ApiResponse<FAQCategory[]>) => response.result ?? [],
+            transformResponse: (
+                response: ApiResponse<FAQCategory[]>
+            ) => response.result ?? [],
         }),
 
-        // 2. Get all groups, questions and answers for the segment.
-        getFAQsBySegment: builder.query<FAQGroup[], FAQSegment>({
-            query: (segment) => ({
-                url: `FAQs/GetFAQsBySegmentAsync/${segment}`,
-                method: "GET",
-            }),
+        // 2. Get all FAQs for the initial page.
+        getFAQsBySegment: builder.query<FAQItem[], void>({
+            query: () => "FAQs/GetFAQsBySegmentAsync",
 
-            transformResponse: (response: NestedApiResponse<FAQGroup[]>) => response.result?.result ?? [],
+            transformResponse: (
+                response: NestedApiResponse<FAQItem[]>
+            ) => response.result?.result ?? [],
         }),
 
-        // 3. Get questions and answers for one category.
+        // 3. Get a category and its Prepaid/Postpaid/Other subgroups.
         getGrouped: builder.query<FAQGroup[], string>({
-            query: (groupCode) => ({
-                url: `FAQs/GetGrouped/${encodeURIComponent(groupCode)}`,
-                method: "GET",
-            }),
+            query: (groupCode) =>
+                `FAQs/GetGrouped/${encodeURIComponent(groupCode)}`,
 
-            transformResponse: (response: NestedApiResponse<FAQGroup[]>) => response.result?.result ?? [],
+            transformResponse: (
+                response: NestedApiResponse<FAQGroup[]>
+            ) => response.result?.result ?? [],
         }),
     }),
 });
 
 export const {
-    useGetGroupInfoQuery,
+    useGetGroupsInfoQuery,
     useGetFAQsBySegmentQuery,
     useGetGroupedQuery,
 } = FAQsApi;

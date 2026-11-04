@@ -23,7 +23,7 @@ function Footer(): React.ReactElement {
             <Box sx={footerStyles.linksContainer}>
                 <Link
                     component={NavLink}
-                    to="/privacy-policy"
+                    to="/privacy_policy"
                     sx={footerStyles.link}
                 >
                     <Typography variant="subtitle1">
@@ -40,7 +40,7 @@ function Footer(): React.ReactElement {
 
                 <Link
                     component={NavLink}
-                    to="/terms"
+                    to="/terms_conditions"
                     sx={footerStyles.link}
                 >
                     <Typography variant="subtitle1">

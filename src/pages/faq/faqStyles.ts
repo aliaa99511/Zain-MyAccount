@@ -1,21 +1,21 @@
+
 import { alpha, type Theme } from "@mui/material/styles";
 
-// Sizes only – colors come from the theme
 const faqTokens = {
     categoryMinHeight: "1rem",
     categoryIconSize: "2.4rem",
     categoryBorderRadius: "0.75rem",
 
     accordionRadius: "0.5rem",
-    accordionSpacing: "0.75rem",
-    accordionMinHeight: "1rem",
-    horizontalPadding: "0.5rem",
+    accordionSpacing: "0.5rem",
+    horizontalPadding: "0.75rem",
+
+    arrowSize: "1.3rem",
+    // arrowBackground: "#0153A5",
 };
 
 export const faqStyles = {
     tokens: faqTokens,
-
-    /* ================= CATEGORY ================= */
 
     categoriesContainer: {
         display: "grid",
@@ -34,107 +34,161 @@ export const faqStyles = {
             ? theme.palette.primary.main
             : theme.palette.divider,
         backgroundColor: isSelected
-            ? theme.palette.action.selected
+            ? theme.palette.primary.main
             : theme.palette.background.paper,
         transition: "all 0.2s ease",
+        overflow: "hidden",
         padding: 0,
     }),
 
     categoryAction: {
         minHeight: faqTokens.categoryMinHeight,
         px: 2,
-        py: 2,
+        py: 1.5,
         display: "flex",
         alignItems: "center",
         justifyContent: "flex-start",
         gap: 2,
     },
 
-    categoryIcon: (theme: Theme) => ({
+    categoryIcon: (theme: Theme, isSelected: boolean) => ({
         width: faqTokens.categoryIconSize,
         height: faqTokens.categoryIconSize,
         borderRadius: "50%",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: alpha(theme.palette.primary.main, 0.3),
-        color: theme.palette.primary.main,
+        backgroundColor: isSelected
+            ? alpha("#FFFFFF", 0.2)
+            : alpha(theme.palette.primary.main, 0.18),
+        color: isSelected
+            ? "#FFFFFF"
+            : theme.palette.primary.main,
+        // backgroundColor: alpha(theme.palette.primary.main, 0.3),
+        // color: theme.palette.primary.main,
         flexShrink: 0,
+        overflow: "hidden",
     }),
 
     categoryText: (theme: Theme, isSelected: boolean) => ({
         fontSize: "1rem",
         fontWeight: 500,
+        // color: isSelected
+        //     ? theme.palette.primary.main
+        //     : theme.palette.text.primary,
         color: isSelected
-            ? theme.palette.primary.main
-            : theme.palette.text.primary,
+            ? "#FFFFFF"
+            : theme.palette.primary.main,
+        textAlign: "start",
     }),
 
-    /* ================= ACCORDION ================= */
+    /* SUBCATEGORY FILTERS */
+
+    subcategoryFilters: {
+        display: "flex",
+        width: "100%",
+        gap: 1,
+        p: ".5rem",
+        mt: 2,
+        mb: 2,
+        border: "1px solid",
+        borderColor: "primary.main",
+        borderRadius: "2rem",
+        overflowX: "auto",
+    },
+
+    subcategoryButton: (theme: Theme, isSelected: boolean) => ({
+        flex: "1 0 0",
+        minWidth: "5rem",
+        borderRadius: "1.2rem",
+        px: 2,
+        py: 1,
+        textTransform: "none",
+        whiteSpace: "nowrap",
+        fontWeight: 500,
+        color: isSelected
+            ? "#FFFFFF"
+            : theme.palette.text.secondary,
+        backgroundColor: isSelected
+            ? theme.palette.primary.main
+            : "transparent",
+        "&:hover": {
+            backgroundColor: isSelected
+                ? theme.palette.primary.dark
+                : alpha(theme.palette.primary.main, 0.08),
+        },
+    }),
+
+    /* ACCORDION */
 
     accordionContainer: {
-        mt: 3,
+        mt: 2,
     },
 
     accordion: (theme: Theme) => ({
-        // backgroundColor: "green",
-        padding: "0.3rem .5rem",
         mb: faqTokens.accordionSpacing,
+        px: 1,
         borderRadius: `${faqTokens.accordionRadius} !important`,
-        // backgroundColor: theme.palette.background.paper,
+        backgroundColor: theme.palette.action.hover,
+        p: .7,
+        boxShadow: "none",
         "&:before": {
             display: "none",
         },
     }),
 
-    accordionSummary: (theme: Theme) => ({
+    accordionSummary: (theme: Theme, language: "En" | "Ar") => ({
+        minHeight: "3rem",
+        px: 1,
+
+        direction: language === "Ar" ? "rtl" : "ltr",
+
         "& .MuiAccordionSummary-content": {
-            // margin: "1rem 0",
+            my: 1,
+            minWidth: 0,
+            textAlign: language === "Ar" ? "right" : "left",
         },
 
         "& .MuiAccordionSummary-expandIconWrapper": {
-            width: "1.5rem",
-            height: "1.5rem",
-            borderRadius: "7px",
+            width: faqTokens.arrowSize,
+            height: faqTokens.arrowSize,
+            borderRadius: "5px",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             backgroundColor: theme.palette.primary.main,
             color: "#FFFFFF",
             flexShrink: 0,
-            transition: "transform 0.2s ease",
-
             "& svg": {
                 color: "#FFFFFF",
             },
         },
     }),
+
     question: (theme: Theme, language: "En" | "Ar") => ({
         color: theme.palette.primary.main,
         fontWeight: 500,
-        textAlign:
-            language === "Ar"
-                ? "right"
-                : "left",
+        textAlign: language === "Ar" ? "right" : "left",
+        direction: language === "Ar" ? "rtl" : "ltr",
         width: "100%",
+        lineHeight: 1.6,
     }),
 
     accordionDetails: {
         px: faqTokens.horizontalPadding,
-        pb: 2.5,
+        pt: 1, // Space above the answer
+        pb: 2,
     },
-
     answer: (theme: Theme, language: "En" | "Ar") => ({
         color: theme.palette.text.secondary,
         lineHeight: 1.8,
         whiteSpace: "pre-line",
-        textAlign:
-            language === "Ar"
-                ? "right"
-                : "left",
-        direction:
-            language === "Ar"
-                ? "rtl"
-                : "ltr",
+        textAlign: language === "Ar" ? "right" : "left",
+        direction: language === "Ar" ? "rtl" : "ltr",
     }),
 };
+
+
+
+
+

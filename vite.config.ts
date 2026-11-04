@@ -57,5 +57,14 @@ export default defineConfig({
   ],
   define: {
     '__APP_VERSION__': JSON.stringify(process.env.npm_package_version),
-  }
+  },
+  server: {
+    proxy: {
+      "/api": {
+        target: "https://172.191.7.149:7777/",
+        changeOrigin: true,
+        secure: false, // Development only: ignore invalid HTTPS certificates
+      },
+    },
+  },
 });

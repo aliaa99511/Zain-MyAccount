@@ -32,7 +32,7 @@ export const ConfirmDialog = ({
 
   return (
     <>
-      <DialogTitle sx={{mb:2, p:0}} variant="h3">{title}</DialogTitle>
+      <DialogTitle sx={{mb:2, p:0}} variant="h4">{title}</DialogTitle>
 
       {description && (
         <DialogContent  sx={{mb:2, p:0}}>

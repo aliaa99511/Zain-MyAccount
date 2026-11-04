@@ -10,7 +10,6 @@ import { LanguageContext } from "../../App";
 import {
     sideMenuStyles,
 } from "../../theme/themes/common_components/menuItems";
-import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import { menuItems } from "../commonComponents/MenuItemsLinks";
 import MenuContent from "../commonComponents/MenuContent";
 import type { MenuKey } from "../commonComponents/types";
@@ -114,12 +113,12 @@ function SideMenu(): React.ReactElement {
                     />
                 </Box>
 
-                <Box sx={sideMenuStyles.logout}>
+                {/* <Box sx={sideMenuStyles.logout}>
                     <MenuContent
                         icon={<LogoutOutlinedIcon />}
                         label={getLabel("Logout")}
                     />
-                </Box>
+                </Box> */}
             </Box>
         </Box>
 

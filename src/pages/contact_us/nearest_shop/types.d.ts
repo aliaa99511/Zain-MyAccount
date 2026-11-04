@@ -14,6 +14,7 @@ interface Shop {
   nearbyLandmarksAr: string;
   latitude: number;
   longitude: number;
+  distance?: number;
 }
 interface Shops {
   message: string;

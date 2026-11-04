@@ -8,7 +8,7 @@ import { useGetShopsQuery } from '../../../store';
 import FindShops from './FindShops';
 
 
-const calculateShopDistances = async (latitude: number | null, longitude: number | null, shops: Shops | undefined ) => {
+const calculateShopDistances = async (latitude: number | null, longitude: number | null, shops: Shops | undefined, setshopsWithDistance: React.Dispatch<React.SetStateAction<Shops | undefined>>) => {
   if (latitude === null || longitude === null || !shops?.shops?.length) {
     return;
   }
@@ -26,11 +26,6 @@ const calculateShopDistances = async (latitude: number | null, longitude: number
       lat: Number(shop.latitude),
       lng: Number(shop.longitude),
     }))
-    .filter(
-      (location) =>
-        Number.isFinite(location.lat) &&
-        Number.isFinite(location.lng)
-    );
 
   const { matrix } = await RouteMatrix.computeRouteMatrix({
     origins: [origin],
@@ -40,8 +35,16 @@ const calculateShopDistances = async (latitude: number | null, longitude: number
       "distanceMeters",
     ],
   });
-  console.log("Route matrix:", matrix);
-};
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const RouteMatrixResponse:any = matrix.toJSON();
+  if (RouteMatrixResponse.rows && RouteMatrixResponse.rows.length > 0) {
+    const updatedShops = shops.shops.map((shop, index) => ({
+      ...shop,
+      distance: RouteMatrixResponse.rows[0].items[index].distanceMeters ?? null,
+    })).sort((a, b) => (a.distance ?? Infinity) - (b.distance ?? Infinity));
+    setshopsWithDistance({ ...shops, shops: updatedShops });
+  }
+}
 
 
 function NearestShop():React.ReactElement {
@@ -52,6 +55,8 @@ function NearestShop():React.ReactElement {
   const [longitude, setLongitude] = useState<number | null>(null);
 
   const [filteredShops, setFilteredShops] = useState<Shops | undefined>(undefined);
+  //setshopsWithDistance
+  const [shopsWithDistance, setshopsWithDistance] = useState<Shops | undefined>(undefined);
   const [regions, setRegions] = useState<Region[]>([]);
   const [cities, setCities] = useState<City[]>([]);
   const [shops, setShops] = useState<InnerShop[]>([]);
@@ -82,10 +87,18 @@ function NearestShop():React.ReactElement {
     }
   }, []);
 
+  useEffect(() => {
+    if(shopsWithDistance && shopsWithDistance.shops.length > 0) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setFilteredShops(shopsWithDistance);
+    }
+    else {
+      setFilteredShops(shopsData);
+    }
+  }, [shopsWithDistance, shopsData]);
+
   useEffect(()=>{
     if(!isShopsLoading && isShopsSuccess) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setFilteredShops(shopsData);
       const reducedRegions = Array.from(
         shopsData.shops.reduce((regionMap, shop) => {
           const regionKey = shop.regionNameEn;
@@ -111,6 +124,7 @@ function NearestShop():React.ReactElement {
           }
           return regionMap;
         }, new Map<string, Region>()).values());
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setRegions(reducedRegions);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -118,7 +132,7 @@ function NearestShop():React.ReactElement {
 
   useEffect(()=>{
     if(latitude && longitude && shopsData) {
-      calculateShopDistances(latitude, longitude, shopsData);
+      calculateShopDistances(latitude, longitude, shopsData, setshopsWithDistance);
     }
   }, [latitude, longitude, shopsData])
 
@@ -133,7 +147,7 @@ function NearestShop():React.ReactElement {
     <Paper>
       <Typography variant='h2'>{contact_us_sentences.NearestShopTitle[language]}</Typography>
       <Typography variant='body1'>{contact_us_sentences.NearestShopDescription[language]}</Typography>
-      <FindShops shopsData={shopsData!} regions={regions} cities={cities} shops={shops} setCities={setCities} setShops={setShops} setFilteredShops={setFilteredShops} />
+      <FindShops shopsData={shopsWithDistance! || shopsData!} regions={regions} cities={cities} shops={shops} setCities={setCities} setShops={setShops} setFilteredShops={setFilteredShops} />
       <Box sx={{mt: 2}}>
         <Grid container columnSpacing={2.5} rowSpacing={1}>
           <Grid size="grow">
@@ -142,24 +156,6 @@ function NearestShop():React.ReactElement {
           <Box sx={{
             width: "430px", height: "450px", overflowY: "scroll", 
             gap: 2, display: "flex", flexDirection: "column", p:0.5, paddingInlineEnd: 1,
-            scrollbarWidth: 'thin',
-            scrollbarColor: '#953193 #F5F5F5',
-            '&::-webkit-scrollbar': {
-              width: '8px',
-            },
-            '&::-webkit-scrollbar-track': {
-              background: '#F2F2F2',
-              borderRadius: '999px',
-              border: "1px solid #A3A3A3",
-            },
-            '&::-webkit-scrollbar-thumb': {
-              backgroundColor: '#953193',
-              borderRadius: '999px',
-              border: "1px solid #A3A3A3",
-            },
-            '&::-webkit-scrollbar-thumb:hover': {
-              backgroundColor: '#7D297B',
-            },
           }}>
             {filteredShops?.shops.map(shop => <ShopCard shop={shop} isActive={activeShopId == shop.shopId} setActiveShopId={setActiveShopId} />)}
           </Box>

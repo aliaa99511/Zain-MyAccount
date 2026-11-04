@@ -34,7 +34,9 @@ function ShopCard({shop, isActive, setActiveShopId}:PropsType): React.ReactEleme
       ms: 0.5,
       boxShadow: "1px 1px 8px 0px #1818181F",
       borderRadius: "12px",
-      display: "block",
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "flex-start",
       textAlign: "start",
       "&.active": {
         border: "1px solid #9B4292"
@@ -51,10 +53,20 @@ function ShopCard({shop, isActive, setActiveShopId}:PropsType): React.ReactEleme
         <Typography variant='subtitle2'><LocationOnOutlinedIcon sx={{marginInlineEnd: 0.5}} />{contact_us_sentences.NearestShopNearTo[language]}: {shop?.["nearbyLandmarks"+language]}</Typography>
         <Box sx={{display: 'flex', alignItems: "center", gap: 2}}>
           <Typography variant='subtitle2'> <AccessTimeOutlinedIcon sx={{marginInlineEnd: 0.5}} />9:00 {contact_us_sentences.NearestShopDurationAM[language]} {contact_us_sentences.NearestShopDurationTo[language]} 6:00 {contact_us_sentences.NearestShopDurationPM[language]}</Typography>
-          <Typography variant='subtitle1'>•</Typography>
-          <Typography variant='subtitle2'><MapMarkerDistanceIcon sx={{marginInlineEnd: 0.5}} /> 3 KM Away</Typography>
+          {shop.distance? (
+          <>
+            <Typography variant='subtitle1'>•</Typography>
+            <Typography variant='subtitle2'><MapMarkerDistanceIcon sx={{marginInlineEnd: 0.5}} /> {(shop.distance / 1000).toFixed(2)} {contact_us_sentences.NearestShopDistanceKM[language]}</Typography>
+          </>
+          ): ""}
         </Box>
       </Box>
+      <Button variant='contained' color="info" size="small" sx={{fontSize: '0.75rem'}} onClick={(e) => {
+        e.stopPropagation();
+        window.open(`https://www.google.com/maps/search/?api=1&query=${shop.latitude},${shop.longitude}`, '_blank');
+      }}>
+        Open in Google Maps
+      </Button>
     </Button>
   )
 }

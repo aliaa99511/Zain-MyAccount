@@ -39,6 +39,10 @@ export const contact_us_sentences = {
     En: "Phone Number",
     Ar: "رقم الهاتف",
   },
+  SendMessageAdditionalPhoneNumber: {
+    En: "Additional Phone Number",
+    Ar: "رقم هاتف إضافي",
+  },
   SendMessageSubject: {
     En: "Subject",
     Ar: "الموضوع",
@@ -47,17 +51,73 @@ export const contact_us_sentences = {
     En: "Write the main point from your message",
     Ar: "اكتب النقطة الرئيسية من رسالتك",
   },
+  SendMessageEmailAddress: {
+    En: "Email Address",
+    Ar: "البريد الإلكتروني",
+  },
   SendMessageBody: {
     En: "Body",
     Ar: "نص الرسالة",
   },
   SendMessageBodyPlaceholder: {
-    En: "Feel free to write want you want...",
-    Ar: "لا تتردد في كتابة ما تريد...",
+    En: "Feel free to write whatever you want...",
+    Ar: "لا تتردد في كتابة ما تشاء...",
   },
   SendMessageButtonText: {
     En: "Send Message",
     Ar: "إرسال الرسالة",
+  },
+  FullNameRequired: {
+    En: "Full name is required",
+    Ar: "الاسم بالكامل مطلوب"
+  },
+  PhoneNumberRequired: {
+    En: "Phone Number is required",
+    Ar: "رقم الهاتف مطلوب"
+  },
+  PhoneNumberInvalid: {
+    En: "Please enter a valid Sudan phone number",
+    Ar: "يرجى إدخال رقم هاتف سوداني صالح"
+  },
+  AdditionalPhoneNumberInvalid: {
+    En: "Phone number does not match the selected country",
+    Ar: "رقم الهاتف لا يتطابق مع البلد المختار"
+  },
+  EmailRequired: {
+    En: "Email is required",
+    Ar: "البريد الإلكتروني مطلوب"
+  },
+  EmailNotValid: {
+    En: "Please enter a valid email address",
+    Ar: "يرجى إدخال عنوان بريد إلكتروني صالح"
+  },
+  SubjectRequired: {
+    En: "Subject is required",
+    Ar: "الموضوع مطلوب"
+  },
+  SubjectMaxLimit: {
+    En: "Subject cannot exceed $$ characters",
+    Ar: "يجب ألا يتجاوز الموضوع $$ حرفاً"
+  },
+  BodyRequired: {
+    En: "Body is required",
+    Ar: "نص الرسالة مطلوب"
+  },
+  BodyMinLimit: {
+    En: "Body is too short",
+    Ar: "نص الرسالة قصير جداً"
+  },
+  BodyMaxLimit: {
+    En: "Body cannot exceed $$ characters",
+    Ar: "لا يمكن أن يتجاوز النص $$ حرفاً"
+  },
+  SubmittedSuccessfully: {
+    En: "We received your message and will return back to you as soon as possible",
+    Ar: "لقد تلقينا رسالتك وسنرد عليك في أقرب وقت ممكن"
+  },
+  SubmiteFailed: {
+    En: "We couldn’t submit your message please try again later or contact support",
+    Ar: "تعذّر إرسال رسالتك؛ يرجى المحاولة مجدداً لاحقاً أو التواصل مع فريق الدعم"
   },
   NearestShopTitle: {
     En: "Find Nearest Shop",
@@ -102,5 +162,9 @@ export const contact_us_sentences = {
   NearestShopDurationPM: {
     En: "PM",
     Ar: "مساءاُ",
+  },
+  NearestShopDistanceKM: {
+    En: "KM",
+    Ar: "كم",
   },
 }

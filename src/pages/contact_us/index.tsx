@@ -6,7 +6,6 @@ import NearestShop from './nearest_shop';
 import { APIProvider } from '@vis.gl/react-google-maps';
 
 function ContactUs(): React.ReactElement {
-
   return <Paper sx={{ backgroundColor: { xs: "transparent" }, overflow: { xs: "visible", md: "hidden" }, boxShadow: { xs: "none" }, padding: { xs: 0, md: "1.5rem" } }}>
     <Grid container spacing={3} sx={{ alignItems: "stretch" }}>
       <Grid sx={{ width: { xs: "100%", md: "400px" } }}>
@@ -16,7 +15,7 @@ function ContactUs(): React.ReactElement {
         <ContactForm />
       </Grid>
       <Grid size={{xs: 12}}>
-        <APIProvider apiKey="" libraries={["routes"]}>
+        <APIProvider apiKey="AIzaSyA8tJLb2K7w1JD9hoV1DA2d2irUU2BcwNY" libraries={["routes"]}>
           <NearestShop />
         </APIProvider>
       </Grid>

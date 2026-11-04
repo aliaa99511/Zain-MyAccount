@@ -1,3 +1,4 @@
+
 import React from "react";
 import {
     Box,
@@ -6,6 +7,7 @@ import {
     Typography,
 } from "@mui/material";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
+
 import type { FAQCategory } from "../../store/apis/faqs_api";
 import { faqStyles } from "./faqStyles";
 
@@ -25,11 +27,12 @@ function FAQCategories({
     return (
         <Box sx={faqStyles.categoriesContainer}>
             {categories.map((category) => {
-                const isSelected = selectedCategory === category.code;
+                const isSelected =
+                    selectedCategory === category.code;
 
                 return (
                     <Card
-                        key={category.code}
+                        key={category.id}
                         elevation={0}
                         sx={(theme) =>
                             faqStyles.categoryCard(theme, isSelected)
@@ -43,10 +46,25 @@ function FAQCategories({
                         >
                             <Box
                                 sx={(theme) =>
-                                    faqStyles.categoryIcon(theme)
+                                    faqStyles.categoryIcon(theme, isSelected)
                                 }
                             >
-                                <HelpOutlineOutlinedIcon />
+                                {category.iconDataUri ? (
+                                    <Box
+                                        component="img"
+                                        src={category.iconDataUri}
+                                        alt=""
+                                        aria-hidden="true"
+                                        sx={{
+                                            width: "1.5rem",
+                                            height: "1.5rem",
+                                            objectFit: "contain",
+                                            borderRadius: "4px",
+                                        }}
+                                    />
+                                ) : (
+                                    <HelpOutlineOutlinedIcon />
+                                )}
                             </Box>
 
                             <Typography

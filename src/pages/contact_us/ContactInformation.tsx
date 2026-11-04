@@ -25,7 +25,7 @@ function ContactInformation():React.ReactElement {
   const { confirm } = useDialog();
   const languageContext = useContext(LanguageContext);
   const language = languageContext?.language ?? 'En';
-  const { data: ContactUsInfo, isFetching: isInforamtionLoading, isError: isInforamtionError } = useGetContactUsInforamtionQuery("B2C");
+  const { data: ContactUsInfo, isFetching: isInforamtionLoading, isError: isInforamtionError } = useGetContactUsInforamtionQuery();
 
 
   if (isInforamtionLoading) {

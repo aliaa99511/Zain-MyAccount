@@ -1,7 +1,7 @@
 export const create_account_sentences = {
   CreateAccountSteps: {
     En: ['Number', 'Security Questions', 'OTP', 'Password'],
-    Ar: ['الرقم','أسئلة الأمان','رمز المرور','كلمة المرور']
+    Ar: ['الرقم', 'أسئلة الأمان', 'رمز المرور', 'كلمة المرور']
   },
   CreateAccountTitle: {
     En: "Create an account",
@@ -39,8 +39,24 @@ export const create_account_sentences = {
     En: "OR",
     Ar: "أو"
   },
-  AlreadyHaveAccount : {
+  NotCheckAgree: {
+    En: "You must agree to the Terms & Conditions and Privacy Policy",
+    Ar: "يجب عليك الموافقة على الشروط والأحكام وسياسة الخصوصية"
+  },
+  AlreadyHaveAccount: {
     En: "I already have an account",
     Ar: "لدي حساب بالفعل"
-  }
+  },
+  CreatePasswordTitle: {
+    En: "Create Password",
+    Ar: "إنشاء كلمة المرور",
+  },
+  CreatePasswordDescription: {
+    En: "Make sure that the passwords match and follow the rules to proceed.",
+    Ar: "تأكد من تطابق كلمتي المرور واستيفاء الشروط للمتابعة.",
+  },
+  CreateAccount: {
+    En: "Create Account",
+    Ar: "إنشاء الحساب",
+  },
 }

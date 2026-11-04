@@ -15,8 +15,8 @@ export function ThemeProvider({ direction, children }: { direction: 'ltr' | 'rtl
   const user = { role: USER_ROLES.B2B };
 
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [appearance, setAppearance] = useState<"light" | "dark">("light");
+  //setAppearance
+  const [appearance] = useState<"light" | "dark">("light");
 
   const theme = useMemo(() => {
     if (!user) {

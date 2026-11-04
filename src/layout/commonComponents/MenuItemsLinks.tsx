@@ -32,12 +32,12 @@ export const menuItems: MenuItem[] = [
             {
                 label: "SubmitComplaint",
                 icon: <MenuIcon Icon={CommentPlusIcon} />,
-                path: "/contact-us",
+                path: "/create-complaints",
             },
             {
                 label: "ComplaintsHistory",
                 icon: <MenuIcon Icon={ListAltOutlinedIcon} />,
-                path: "/live-chat",
+                path: "/complaints",
             },
         ],
     },

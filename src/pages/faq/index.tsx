@@ -1,5 +1,11 @@
 
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, {
+    useContext,
+    useEffect,
+    useMemo,
+    useState,
+} from "react";
+
 import {
     Box,
     InputAdornment,
@@ -9,116 +15,132 @@ import {
     TextField,
     Typography,
 } from "@mui/material";
+
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+
 import { LanguageContext } from "../../App";
 import {
-    useGetGroupInfoQuery,
+    useGetGroupsInfoQuery,
     useGetFAQsBySegmentQuery,
     useGetGroupedQuery,
 } from "../../store";
-import type { FAQSegment } from "../../store/apis/faqs_api";
+
+import type {
+    FAQItem,
+    FAQSubGroup,
+} from "../../store/apis/faqs_api";
+
 import FAQCategories from "./FAQCategories";
 import FAQAccordion from "./FAQAccordion";
-import { faqMatchesSearch } from "./faq_utils";
+import FAQSubcategoryFilters from "./FAQSubcategoryFilters";
 import FAQSkeleton from "./FAQSkeleton";
+import { faqMatchesSearch } from "./faq_utils";
 import { faqs_sentences } from "../../configurations/language";
 
-// interface FAQsProps {
-//     segment: FAQSegment;
-// }
-
-{/* <FAQs segment="B2C_Prepaid" /> */ }
-
-let segment: FAQSegment = "B2C_Prepaid";
-
-// function FAQs({ segment }: FAQsProps): React.ReactElement {
 function FAQs(): React.ReactElement {
     const languageContext = useContext(LanguageContext);
     const language = languageContext?.language === "Ar" ? "Ar" : "En";
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+    const [selectedSubgroup, setSelectedSubgroup] = useState<string | null>(null);
     const [search, setSearch] = useState("");
 
-    // 1. Get category information for the segment.
+    // Initial page data: no segment is sent.
     const {
         data: categories = [],
         isLoading: isCategoriesLoading,
         isError: isCategoriesError,
-    } = useGetGroupInfoQuery(segment);
+    } = useGetGroupsInfoQuery();
 
-    // 2. Get all FAQ groups and questions for the segment.
     const {
-        data: allFAQGroups = [],
+        data: allFAQs = [],
         isLoading: isAllFAQsLoading,
         isError: isAllFAQsError,
-    } = useGetFAQsBySegmentQuery(segment);
+        refetch: refetchAllFAQs,
+    } = useGetFAQsBySegmentQuery();
 
-    // 3. Only request a category when one is selected.
-    // When selectedCategory is null, this request is skipped.
+    // Load selected category with its Prepaid/Postpaid/Other groups.
     const {
-        currentData: selectedFAQGroups = [],
+        currentData: selectedGroups = [],
         isFetching: isSelectedFAQsLoading,
         isError: isSelectedFAQsError,
     } = useGetGroupedQuery(selectedCategory ?? "", {
         skip: !selectedCategory,
     });
 
-    // Reset selection and search when the segment changes.
-    useEffect(() => {
-        setSelectedCategory(null);
-        setSearch("");
-    }, [segment]);
-
-    const sortedCategories = useMemo(
-        () =>
-            [...categories].sort(
-                (a, b) => a.sortOrder - b.sortOrder
-            ),
+    const sortedCategories = useMemo(() => [...categories].sort(
+        (a, b) => a.sortOrder - b.sortOrder
+    ),
         [categories]
     );
 
-    // Use the segment's complete response initially.
-    // When a category is selected, use GetGrouped's response.
-    const faqItems = useMemo(() => {
-        const groups = selectedCategory ? selectedFAQGroups : allFAQGroups;
+    const subgroups = useMemo<FAQSubGroup[]>(() =>
+        selectedGroups
+            .flatMap((group) => group.faqSubGrouped ?? [])
+            .sort((a, b) => a.sortOrder - b.sortOrder),
+        [selectedGroups]
+    );
 
-        return groups
-            .flatMap((group) => group.items ?? [])
-            .filter((item) => {
-                // Search both languages, regardless of UI language.
-                // This lets Arabic and English searches both work.
-                return (
-                    faqMatchesSearch(item.questionEn, item.answerEn, search) ||
-                    faqMatchesSearch(item.questionAr, item.answerAr, search)
-                );
-            })
+    // Select the first subgroup (normally Prepaid) by default.
+    useEffect(() => {
+        if (!selectedCategory) {
+            setSelectedSubgroup(null);
+            return;
+        }
+
+        if (subgroups.length > 0) {
+            setSelectedSubgroup(subgroups[0].code);
+        } else {
+            setSelectedSubgroup(null);
+        }
+    }, [selectedCategory, subgroups]);
+
+    const selectedSubgroupData = useMemo(() =>
+        subgroups.find(
+            (subgroup) => subgroup.code === selectedSubgroup
+        ),
+        [subgroups, selectedSubgroup]
+    );
+
+    const visibleItems = useMemo<FAQItem[]>(() => {
+        const items = selectedCategory
+            ? selectedSubgroupData?.items ?? []
+            : allFAQs; // no category selected → all FAQs from getFAQsBySegment
+
+        return items
+            .filter((item) =>
+                language === "Ar"
+                    ? faqMatchesSearch(item.questionAr, item.answerAr, search)
+                    : faqMatchesSearch(item.questionEn, item.answerEn, search)
+            )
             .sort((a, b) => a.sortOrder - b.sortOrder);
-    }, [
-        allFAQGroups,
-        selectedFAQGroups,
-        selectedCategory,
-        search,
-    ]);
+    }, [allFAQs, selectedCategory, selectedSubgroupData, search, language]);
+
 
     const handleCategoryClick = (code: string) => {
-        // Clicking the selected category again returns to all FAQs.
-        setSelectedCategory((current) =>
-            current === code ? null : code
-        );
+        if (selectedCategory === code) {
+            // Unselect: clear category state and go back to the full list
+            setSelectedCategory(null);
+            setSelectedSubgroup(null);
+            refetchAllFAQs(); // calls FAQs/GetFAQsBySegmentAsync again
+            return;
+        }
+
+        setSelectedCategory(code);
+        setSelectedSubgroup(null);
     };
 
     const isInitialLoading = isCategoriesLoading || isAllFAQsLoading;
-
-    const hasError =
-        isCategoriesError ||
-        isAllFAQsError ||
-        (Boolean(selectedCategory) && isSelectedFAQsError);
-
-    const isLoadingSelectedCategory = Boolean(selectedCategory) && isSelectedFAQsLoading;
+    const hasInitialError = isCategoriesError || isAllFAQsError;
+    const hasSelectedCategoryError = Boolean(selectedCategory) && isSelectedFAQsError;
+    // const isLoadingSelectedCategory = Boolean(selectedCategory) && isSelectedFAQsLoading;
 
     return (
         <Paper
             sx={{
-                backgroundColor: { xs: "transparent", md: "background.paper" },
+                backgroundColor: {
+                    xs: "transparent",
+                    md: "background.paper",
+                },
                 overflow: { xs: "visible", md: "hidden" },
                 boxShadow: "none",
                 p: { xs: 0, md: 3 },
@@ -128,8 +150,14 @@ function FAQs(): React.ReactElement {
             <Box
                 sx={{
                     display: "flex",
-                    flexDirection: { xs: "column", md: "row" },
-                    alignItems: { xs: "stretch", md: "center" },
+                    flexDirection: {
+                        xs: "column",
+                        md: "row",
+                    },
+                    alignItems: {
+                        xs: "stretch",
+                        md: "center",
+                    },
                     justifyContent: "space-between",
                     gap: 2,
                     mb: 3,
@@ -150,7 +178,9 @@ function FAQs(): React.ReactElement {
                     onChange={(event) =>
                         setSearch(event.target.value)
                     }
-                    placeholder={faqs_sentences.FAQs.searchPlaceholder[language]}
+                    placeholder={
+                        faqs_sentences.FAQs.searchPlaceholder[language]
+                    }
                     fullWidth
                     sx={{
                         maxWidth: { xs: "100%", md: "40rem" },
@@ -170,49 +200,59 @@ function FAQs(): React.ReactElement {
                 />
             </Box>
 
-            {/* Initial loading */}
             {isInitialLoading && <FAQSkeleton />}
 
-            {/* API errors */}
-            {hasError && (
+            {hasInitialError && (
                 <Typography
                     color="error"
-                    sx={{
-                        py: 5,
-                        textAlign: "center",
-                    }}
+                    sx={{ py: 5, textAlign: "center" }}
                 >
                     {faqs_sentences.FAQs.error[language]}
                 </Typography>
             )}
 
-            {/* Categories and questions */}
-            {!isInitialLoading &&
-                !isCategoriesError &&
-                !isAllFAQsError && (
-                    <>
-                        <FAQCategories
-                            categories={sortedCategories}
-                            selectedCategory={selectedCategory}
-                            language={language}
-                            onCategoryClick={handleCategoryClick}
-                        />
+            {!isInitialLoading && !hasInitialError && (
+                <>
+                    <FAQCategories
+                        categories={sortedCategories}
+                        selectedCategory={selectedCategory}
+                        language={language}
+                        onCategoryClick={handleCategoryClick}
+                    />
 
-                        {isLoadingSelectedCategory ? (
-                            <Stack spacing={2} sx={{ mt: 3 }}>
-                                <Skeleton
-                                    variant="rounded"
-                                    height={60}
+                    {hasSelectedCategoryError && (
+                        <Typography
+                            color="error"
+                            sx={{ py: 4, textAlign: "center" }}
+                        >
+                            {faqs_sentences.FAQs.error[language]}
+                        </Typography>
+                    )}
+
+
+                    {selectedCategory &&
+                        !hasSelectedCategoryError && (
+                            isSelectedFAQsLoading ? (
+                                <Stack spacing={2} sx={{ mt: 3 }}>
+                                    <Skeleton variant="rounded" height={45} />
+                                    <Skeleton variant="rounded" height={60} />
+                                </Stack>
+                            ) : subgroups.length > 0 ? (
+                                <FAQSubcategoryFilters
+                                    subgroups={subgroups}
+                                    selectedSubgroup={selectedSubgroup}
+                                    language={language}
+                                    onSelect={setSelectedSubgroup}
                                 />
-                                <Skeleton
-                                    variant="rounded"
-                                    height={60}
-                                />
-                            </Stack>
-                        ) : !isSelectedFAQsError ? (
-                            faqItems.length > 0 ? (
+                            ) : null
+                        )}
+
+                    {!isSelectedFAQsLoading &&
+                        !hasSelectedCategoryError && (
+                            visibleItems.length > 0 ? (
                                 <FAQAccordion
-                                    items={faqItems}
+                                    key={`${selectedCategory ?? "all"}-${selectedSubgroup ?? "default"}`}
+                                    items={visibleItems}
                                     language={language}
                                 />
                             ) : (
@@ -226,9 +266,9 @@ function FAQs(): React.ReactElement {
                                     {faqs_sentences.FAQs.noResults[language]}
                                 </Typography>
                             )
-                        ) : null}
-                    </>
-                )}
+                        )}
+                </>
+            )}
         </Paper>
     );
 }

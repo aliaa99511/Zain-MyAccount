@@ -13,6 +13,7 @@ import { DialogRenderer } from "./DialogRenderer";
 import type {
   AlertOptions,
   ConfirmOptions,
+  CustomOptions,
   DialogConfig,
   DialogInstance,
   FeedbackOptions,
@@ -24,7 +25,7 @@ export interface DialogContextValue {
   confirm: (config: ConfirmOptions) => Promise<boolean>;
   alert: (config: AlertOptions) => Promise<void>;
   feedback: (config: FeedbackOptions) => Promise<void>;
-
+  customDialog: (config: CustomOptions) => Promise<void>;
   success: (title: string, description?: ReactNode) => Promise<void>;
   error: (title: string, description?: ReactNode) => Promise<void>;
   warning: (title: string, description?: ReactNode) => Promise<void>;
@@ -110,6 +111,21 @@ export const DialogProvider = ({ children }: DialogProviderProps) => {
     });
   }, []);
 
+  const customDialog = useCallback((config: CustomOptions): Promise<void> => {
+    return new Promise<any>((resolve) => {
+      resolvedRef.current = false;
+
+      setDialog({
+        config: {
+          ...config,
+          type: "custom",
+        },
+
+        resolve,
+      });
+    });
+  }, []);
+
   const success = useCallback(
     (title: string, description?: ReactNode) => {
       return feedback({
@@ -182,6 +198,7 @@ export const DialogProvider = ({ children }: DialogProviderProps) => {
       confirm,
       alert,
       feedback,
+      customDialog,
       success,
       error,
       warning,
@@ -193,6 +210,7 @@ export const DialogProvider = ({ children }: DialogProviderProps) => {
       confirm,
       alert,
       feedback,
+      customDialog,
       success,
       error,
       warning,

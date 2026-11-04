@@ -106,7 +106,7 @@ export const DialogRenderer = ({
         );
 
       case "custom":
-        return <CustomDialog config={config} />;
+        return <CustomDialog config={config} onClose={handleClose} />;
 
       default:
         return null;

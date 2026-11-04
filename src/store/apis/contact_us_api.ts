@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { env } from "../../configurations/env";
 
 interface ContactItems {
   id: number;
@@ -54,19 +55,51 @@ interface Shops {
   message: string;
   shops: Shop[];
 }
+interface ShopsResponse {
+  result: {
+    message: string;
+    shops: Shop[];
+  }
+}
+interface SendMessageBodyProps {
+  "fullName": string,
+  "email": string,
+  "phoneNumber": string,
+  "additionalPhoneNumber"?: string,
+  "subject": string,
+  "body": string
+}
+interface SendMessageResponse {
+  "message": string,
+}
+
+const isValidLatLng = (lat: unknown, lng: unknown): boolean => {
+  if(!lat || !lng) return false;
+  const latitude = Number(lat);
+  const longitude = Number(lng);
+
+  return (
+    Number.isFinite(latitude) &&
+    Number.isFinite(longitude) &&
+    latitude >= -90 &&
+    latitude <= 90 &&
+    longitude >= -180 &&
+    longitude <= 180
+  );
+};
 export const ContactUsApi = createApi({
   reducerPath: "ContactUsApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://172.191.7.149:7777/api/" }),
+  baseQuery: fetchBaseQuery({ baseUrl: env.baseUrl}),
   tagTypes: ["ContactUs"] as string[],
   endpoints: (builder) => ({
-    getContactUsInforamtion: builder.query<ContactUsInfo, string>({
-      query: (segment) => {
+    getContactUsInforamtion: builder.query<ContactUsInfo, void>({
+      query: () => {
         return {
-          url: `/ContactUsInformation/ContactUsInformation/${segment}`,
+          url: `/ContactUsInformation/ContactUsInformation`,
           method: "GET",
         };
       },
-      transformResponse: (response: Promise<ContactUsInfo>) => response ?? [],
+      transformResponse: (response: ContactUsInfo) => response ?? [],
     }),
     getShops: builder.query<Shops, void>({
       query: () => {
@@ -75,9 +108,25 @@ export const ContactUsApi = createApi({
           method: "GET",
         };
       },
-      transformResponse: (response: Promise<Shops>) => response.result ?? [],
+      transformResponse: (response: ShopsResponse) => {
+        const validShops = response.result.shops?.filter((shop) => isValidLatLng(shop.latitude, shop.longitude)) ?? [];
+        return {
+          message: response.result.message,
+          shops: validShops,
+        };
+      },
+    }),
+    sendMessage: builder.query<SendMessageResponse, SendMessageBodyProps>({
+      query: (body) => {
+        return {
+          url: `/ContactUs`,
+          method: "POST",
+          body: body,
+        };
+      },
+      transformResponse: (response: SendMessageResponse) => response ?? [],
     }),
   }),
 });
 
-export const { useGetContactUsInforamtionQuery, useGetShopsQuery } = ContactUsApi;
+export const { useGetContactUsInforamtionQuery, useGetShopsQuery, useLazySendMessageQuery } = ContactUsApi;

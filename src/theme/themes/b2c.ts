@@ -11,15 +11,26 @@ export const b2cLightTheme = createTheme({
       main: "#008A99",
       light: "#00B3C7",
     },
-
+    error: {
+      main: "#BF0071",
+      light: "#BF00710A",
+    },
+    success: {
+      main: "#119443",
+      light: "#1194430A",
+    },
+    warning: {
+      main: "#BF7C00",
+      light: "#FFDA94",
+    },
     background: {
       default: "#f5f7fa",
       paper: "#ffffff",
     },
-
-    // faq: {
-    //   arrow: "#008A99",
-    // },
+    text: {
+      primary: "#181818",
+      secondary: "#525252",
+    }
   },
 
   components: {

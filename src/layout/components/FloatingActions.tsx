@@ -5,7 +5,7 @@ import { useTheme } from "@mui/material/styles";
 
 import { floatingActionsStyles } from "../../theme/themes/common_components/floatingActions";
 import ChatOutlinedIcon from "@mui/icons-material/ChatOutlined";
-import ZainChatbot from "../../../public/zain-chatbot.png";
+import ZainChatbot from "../../../src/assets/imgs/zain-chatbot.png";
 
 function FloatingActions(): React.ReactElement {
     const navigate = useNavigate();

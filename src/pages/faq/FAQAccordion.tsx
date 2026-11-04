@@ -53,7 +53,7 @@ function FAQAccordion({
                     >
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon />}
-                            sx={(theme) => faqStyles.accordionSummary(theme)}
+                            sx={(theme) => faqStyles.accordionSummary(theme, language)}
                         >
                             <Typography
                                 sx={(theme) =>

@@ -1,5 +1,6 @@
-import {AdvancedMarker, Map, Pin} from '@vis.gl/react-google-maps';
+import {AdvancedMarker, Map, Pin, useMap} from '@vis.gl/react-google-maps';
 import { Box, useTheme } from "@mui/material";
+import { useEffect } from 'react';
 
 const defaultProps = {
   center: {
@@ -33,11 +34,33 @@ const CustomActiveMarker = ({lat, lng}:{lat:number, lng: number})=>{
     </AdvancedMarker>
   )
 } 
+const FitShopsBounds = ({ shops }: { shops: Shop[] }) => {
+  const map = useMap();
 
+  useEffect(() => {
+    if (!map || !shops.length) return;
+
+    const bounds = new google.maps.LatLngBounds();
+
+    shops.forEach((shop) => {
+      const lat = Number(shop.latitude);
+      const lng = Number(shop.longitude);
+      bounds.extend({lat, lng});
+    });
+
+    if (bounds.isEmpty()) return;
+
+    map.fitBounds(bounds, {
+      top: 80,
+      right: 80,
+      bottom: 80,
+      left: 80,
+    });
+  }, [map, shops]);
+
+  return null;
+};
 const CustomMap = ({shops, activeShopId}:{shops: Shops|undefined, activeShopId: number|null}) => {
-  // const languageContext = useContext(LanguageContext);
-  // const language = languageContext?.language ?? 'En';
-
   return (
     <Box sx={{width: "100%", height: {xs:"300px", md:"100%"}}}>
       
@@ -46,12 +69,10 @@ const CustomMap = ({shops, activeShopId}:{shops: Shops|undefined, activeShopId: 
           defaultZoom={defaultProps.zoom}
           mapId="shops-map"
         >
+          <FitShopsBounds shops={shops?.shops ?? []} />
           {shops?.shops.map(item => {
             const lat = Number(item.latitude);
             const lng = Number(item.longitude);
-            if (!Number.isFinite(lat) || !Number.isFinite(lng)) {
-              return null;
-            }
             return (activeShopId == item.shopId ? <CustomActiveMarker key={item.shopId} lat={lat} lng={lng} />:<CustomMarker key={item.shopId} lat={lat} lng={lng} />)
           })}
         </Map>
